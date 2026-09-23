@@ -1,0 +1,109 @@
+OOP (Object-Oriented Programming)
+
+ It is a style of programming that breaks the program on the basis of the objects in it. 
+ It mainly works on Class, Object, Polymorphism, Abstraction, Encapsulation and Inheritance.
+ Its aim is to bind(encapsulate) together the data and functions(methods) that operate on them.
+
+Some of the well-known object-oriented languages are  Perl, Java, Python,  C++ , C# etc
+
+Benefits of OOP
+1. One  can build the programs from standard working modules that communicate with one another, instead of  writing the code from scratch .
+It saves lot of development time and offers higher productivity,
+
+2. OOP language allows to break the program into smaller-sized problems that can be solved easily (one object at a time).
+
+3. Upgrading, extending & testing the application is easier.
+
+4. It is very easy to partition the work in a project based on objects.
+
+5. Data hiding principal helps the programmer to build secure programs which cannot be modified by the code in other parts of the program.
+6. By using inheritance, one can eliminate redundant code and reuse existing classes.
+
+7. Using abstraction , complex implemetations can be hidden from the users.
+
+Class & Object
+
+Classes and Objects are basic concepts of Object Oriented Programming which revolve around the real life entities.
+
+Class
+
+A class is a user defined blueprint or prototype from which objects are created.
+It represents the set of properties(state) and methods(behavior) that are common to all objects of one type. 
+
+Class declaration includes 
+
+1. Access specifiers  : A class can be public or has default access 
+2. Class name: The name should begin with a capital  letter & then follow camel case convention
+3. Superclass(if any): The name of the class s parent (superclass), if any, preceded by the keyword extends. (Implicit super class of all java classes is java.lang.Object)
+4. Interfaces(if any): A comma-separated list of interfaces implemented by the class, if  any, preceded by the keyword implements. A class can implement more than one interface.
+eg : public class Emp extends Person implements Runnable,Comparable{...}
+5. Body: The class body surrounded by braces, { }.
+
+6. Constructors are used for initializing state of new objects. 
+7. Fields are  variables that provides the state of the class and its objects
+8. Methods are used to implement the behavior of the class and its objects.
+
+eg : Student,Employee,Flight,PurchaseOrder, Shape ,BankAccount
+
+Object
+
+It is a basic unit of Object Oriented Programming and represents the real life entities.  A typical Java program creates many objects, which  interact by invoking methods.
+
+An object consists of :
+
+State : It is represented by attributes of an object. (properties of an object) / instance variables(non static data members)
+Behavior : It is represented by methods of an object (actions upon data)
+Identity : It gives a unique identity to an object and enables one object to interact with other objects. eg : Emp id / Student PRN / Invoice No 
+
+Creating an object
+
+The new operator instantiates a class by allocating memory for a new object and returning a reference to that memory. The new operator also invokes the class constructor.
+
+Constructor -- is a special method having
+same name as the class name
+no explicit return type 
+may be parameterized or parameter less.
+
+Parameterized constructor is used init state of the object.
+
+If a class does not explicitly declare any constr , the Java compiler automatically provides a no-argument constructor,called the default constructor. 
+
+This default constructor implicitely calls the super class's  no-argument constructor 
+
+Revise "this" keyword
+It represents : current object reference.
+
+Usages of this
+1. To unhide , instance variables from method local variables.(to resolve the conflict)
+eg : this.height=height;
+
+2. To invoke the constructor ,  from another overloaded constructor in the same class.(constructor chaining , to avoid duplication)
+
+-------------------------------
+Encapsulation in Java
+
+Encapsulation is defined as the wrapping up of data & code under a single unit. It is the mechanism that binds together code and the data it manipulates.
+It's is a protective shield that prevents the data from being accessed by the code outside this shield.
+
+The variables or data of a class is hidden from any other class and can be accessed only through any member function/method of own class in which they are declared.
+
+As in encapsulation, the data in a class is hidden from other classes, so it is also known as data-hiding.
+
+
+Tight Encapsulation can be achieved by: Declaring all the variables in the class as private and writing public methods as its accessors.
+
+
+Advantages of Encapsulation:
+
+1. Data Hiding (security)
+2. Increased Flexibility: We can make the variables of the class as read-only or write only or r/w.
+3. Reusability: Encapsulation also improves the re-usability and easy to change with new requirements.
+4. Testing code is easy
+
+Summary
+
+Encapsulation -- consists of Data hiding + Abstraction
+
+Information hiding -- achieved by private data members & supplying public accessors.
+
+Abstraction -- achieved by supplying an interface to the Client (customer) .Highlighting only WHAT is to be done & not highlighting HOW it's internally implemented.

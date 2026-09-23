@@ -1,0 +1,28 @@
+Do subclasses inherit private data members from it's superclass?
+
+NO !
+Explanation :
+
+As per the java language specification : 
+
+Members of a class that are declared private are not inherited by subclasses of that class. Only members of a class that are declared protected or public are inherited by subclasses declared in a package other than the one in which the class is declared.
+
+BUT what we mean here by inheritance is , are private members accessible in a subclass ?
+That answer is NO
+
+BUT , sub class instance DOES CONTAIN private fields of their superclasses .
+ 
+eg : Person has data members  : private firstName , lastName
+
+Student extends Person 
+It has ADDITIONAL data members :private   gradYear,course,fees,marks
+
+Answer this !
+Can you access firstName & lastName from Student class ? NO
+
+Student IS-A Person
+
+So when you create an instance of a Student : firstName n lastName will be present in Student object , mem allocated in heap.
+
+So how many slots will you show in Student object ? 
+CP + 6 slots .

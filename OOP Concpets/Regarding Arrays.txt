@@ -1,0 +1,59 @@
+Java Arrays
+An array is a collection of similar types of data.
+It's a data structure , which is fixed in size.
+
+For example, if we want to store the names of 100 people then we can create an array of the string type that can store 100 names.
+
+String[] array = new String[100];
+Here, the above array cannot store more than 100 names. The number of values in a Java array is always fixed.
+
+In Java, arrays are created as objects. 
+Like objects, arrays are dynamically created & stored on the heap.
+Before creating an array object , JVM will load the array class in the method area.
+
+How to declare an array in Java?
+In Java, here is how we can declare an array.
+
+dataType[] arrayName;
+dataType - it can be primitive data types like int, char, double, byte, etc. or reference type
+arrayName - it is an identifier
+For example,
+
+eg - double[] data;//mem allocated for array type of ref var .
+Here, data is an array that can hold values of type double.
+
+
+To define the number of elements that an array can hold, we have to allocate memory for the array in Java. For example,
+
+// declare an array
+double[] data;
+
+// allocate memory n create array object use new keyword
+data = new double[10];
+Here, the array can store 10 elements. We can also say that the size or length of the array is 10.
+
+In Java, we can declare and allocate the memory of an array in one single statement. For example,
+
+double[] data = new double[10];
+
+Array object has length as the data member , to find the size of the array.
+
+
+
+
+
+
+
+How to Initialize Arrays in Java?
+In Java, we can initialize arrays during declaration. For example,
+
+//declare and initialize and array
+int[] age =/*new int[]*/ {12, 4, 5, 2, 5};
+
+
+Java Multidimensional Arrays
+
+A multidimensional array is an array of arrays. Each element of a multidimensional array is an array itself. For example,
+
+int[][] a = new int[3][4];
+Here, we have created a multidimensional array named a. It is a 2-dimensional array, that can hold a maximum of 12 elements,

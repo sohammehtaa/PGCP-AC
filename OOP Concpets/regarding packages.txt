@@ -1,0 +1,60 @@
+Regarding Packages
+
+What is a package ?
+Collection of functionally similar classes & interfaces.
+
+Creating user defined packages
+Need ?
+1. To group functionally similar classes together.
+2. Avoids name space collision (allows duplicate class names in different packages)
+3. Finer control over access specifiers.
+
+About Packages 
+1. Creation : package statement has to be placed as the 1st stmt in Java source.
+eg : package p1; => the classes will be part of package p1.
+2.Package names are mapped to folder names.
+eg : package p1; class A{....}
+A.class must exist in folder p1.
+3.  For simplicity --- create folder p1 -- under <src> & compile from <src>
+From <src>
+javac -d ..\bin p1\A.java
+
+-> javac will auto. create the sub-folder <p1> under the <bin> folder & place A.class within <p1>
+
+NOTE : Its not mandatory to create java sources(.java) under package named folder. BUT its mandatory to store packged compiled classes(.class) under package named folders
+
+Earlier half is just maintained as convenience(eg --- javac can then detect auto. dependencies & compile classes ).
+
+3.5 How to launch / run packaged java classes?
+cd <bin>
+java FullyQualifiedClassName
+java p1.A
+
+
+4. To run the pkged classes from any folder : you must set Java specific  environment variable : classpath
+set classpath=g:\dac1\day2\bin;
+
+
+
+classpath= Java specific environment variable
+Used mainly by JVM's classloader : to locate & load the classes.
+Classloader will try to locate the classes from current folder, if not found --- will refer to classpath entries : to resolve & load Java classes.
+
+What should be value of classpath ---Must be set to top of packged class hierarchy(eg : bin) 
+set classpath=d:\dac\day2\bin;.;(cmd line invocation)
+OR better still
+set it from environment variables.
+
+-----------------------------------------------
+Rules
+1.  If the class is part of a package, the package statement must be the first line in the source code file, before any import statements that may be present.
+
+2. If there are import statements, they must go between the package statement
+(if there is one) and the class declaration. If there isn't a package statement,
+then the import statement(s) must be the first line(s) in the source code file.
+If there are no package or import statements, the class declaration must be
+the first line in the source code file.
+
+3. import and package statements apply to all classes within a source code file.
+In other words, there's no way to declare multiple classes in a file and have
+them in different packages, or use different imports.
