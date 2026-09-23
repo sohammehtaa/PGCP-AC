@@ -1,0 +1,143 @@
+Statically typed Vs Dynamically typed languages
+
+In a Statically typed language where each variable and expression type is already known at compile time. Once a variable is declared to be of a certain data type, it cannot hold values of other data types. For example C, C++, and Java.
+
+The other is Dynamically typed languages. These languages can receive different data types over time. For example Ruby, Python
+
+Java is statically typed and a strongly typed language because
+1. In Java, each type of data (such as integer, character, boolean etc) is predefined as part of the JLS (java language specification)  
+
+2. All variables or constants must be defined with one of the data types.
+
+Java Data Types
+
+Java has two categories in which data types are segregated 
+
+
+1. Primitive Data Type: such as boolean, char, int, short, byte, long, float, and double
+: value holding types
+
+2. Non-Primitive Data Types : Reference Data Types
+: address holding types
+
+Types Of Primitive Data Types
+
+1. boolean
+Boolean data type represents only either true or false  BUT the size of the boolean data type is JVM specific
+Default Value: false
+
+2. Byte
+The byte data type is an 8-bit signed two’s complement integer. The byte data type is useful binary file handling or networking application
+
+Range of Values: -128 to 127
+
+Default Value: 0
+
+3. Short
+The short data type is a 16-bit signed two’s complement integer. 
+Values: -32, 768 to 32, 767 
+Default Value: 0
+
+4. Integer
+It is a 32-bit signed two’s complement integer.
+
+
+Size: 4 bytes ( 32 bits )
+
+Values: -2, 147, 483, 648 to 2, 147, 483, 647 
+
+Note: The default value is 0
+
+Note : In Java SE 8 and later, we can use the int data type to represent an unsigned 32-bit integer, which has a value in the range [0--2^32-1]. Using Integer class methods 
+
+5. Long
+  The long data type is a 64-bit two’s complement integer and is useful for those occasions where an int type is not large enough to hold the desired value.
+
+
+Size: 8 bytes (64 bits)
+
+Values: {-9, 223, 372, 036, 854, 775, 808} to {9, 223, 372, 036, 854, 775, 807} (inclusive)
+
+Note: The default value is ‘0’.
+
+Note : In Java SE 8 and later, you can use the long data type to represent an unsigned 64-bit long, which has a minimum value of 0 and a maximum value of 2^64-1. 
+
+6. Float
+The float data type is a single-precision 32-bit IEEE 754 floating-point. Use a float (instead of double) if you need to save memory in large arrays of floating-point numbers.
+
+Size: 4 bytes (32 bits)
+
+Values: upto 7 decimal digits
+
+Note: The default value is 0.0f
+
+7. Double
+The double data type is a double-precision 64-bit IEEE 754 floating-point. For decimal values, this data type is generally the default choice.
+
+
+Size: 8 bytes or 64 bits
+
+Values: Upto 16 decimal digits
+
+Note: 
+
+The default value is taken as 0.0
+Both float and double data types were designed especially for scientific calculations, where approximation errors are acceptable. If accuracy is the most prior concern then, it is recommended not to use these data types and use BigDecimal class instead.
+
+ 
+
+
+8. Char
+The char data type is a single 16-bit Unicode character.
+
+Size: 2 bytes (16 bits)
+
+Values: ‘\u0000’ (0) to ‘\uffff’ (65535)
+
+Note: The default value is ‘\u0000’
+
+Why is the size of char 2 bytes in Java? 
+Other languages like C/C++ use only ASCII characters, and to represent all ASCII characters 8 bits is sufficient.
+
+But java uses the Unicode system not the ASCII code system 
+To represent the Unicode system 8 bits is not enough to represent all characters so java uses 2 bytes for characters. Unicode defines a fully international character set that can represent most of the world’s written languages. It is a unification of dozens of character sets, such as Latin, Greek, Asean Languages and many more.
+
+Non-Primitive Data Type or Reference Data Types
+The Reference Data Types will contain a memory address of objects , which will be created on heap
+3 Types
+1. Class type of reference
+2. Array Type of reference
+3. Interface type of reference
+
+A class is a user-defined blueprint or prototype from which objects are created.  It represents the set of properties or methods that are common to all objects of one type. In general, class declarations can include these components, in order: 
+
+Modifiers: A class can be public or has default access. 
+Class name: The name should begin with an initial letter (capitalized by convention).
+Superclass(if any): The name of the class’s parent (superclass), if any, preceded by the keyword extends. A class can only extend (subclass) one parent.
+Interfaces(if any): A comma-separated list of interfaces implemented by the class, if any, preceded by the keyword implements. A class can implement more than one interface.
+Body: The class body is surrounded by braces, { }.
+
+Object
+It is a basic unit of Object-Oriented Programming and represents real-life entities.  A typical Java program creates many objects, which as you know, interact by invoking methods. An object consists of :
+
+State: It is represented by the attributes of an object. It also reflects the properties of an object.
+Behavior: It is represented by the methods of an object. It also reflects the response of an object to other objects.
+Identity: It gives a unique name to an object and enables one object to interact with other objects.
+
+
+Interface
+Like a class, an interface can have methods and variables, but the methods declared in an interface are by default abstract (only method signature, no body).   
+
+Interfaces specify what a class must do and not how. It is the blueprint of the class.
+eg :  Comparator Interface. If a class implements this interface, then it can be used to sort a collection.
+
+ Array
+An array is a group of like-typed variables that are referred to by a common name. Arrays in Java work differently than they do in C/C++. 
+
+In Java, all arrays are dynamically allocated. 
+Since arrays are objects in Java, we can find their length using member length. This is different from C/C++ where we find length using size.
+A Java array variable can also be declared like other variables with [] after the data type.
+The variables in the array are ordered and each has an index beginning with 0.
+The size of an array must be specified by an int value and not long or short.
+The direct superclass of an array type is Object.
+Every array type implements the interfaces Cloneable and java.io.Serializable.
