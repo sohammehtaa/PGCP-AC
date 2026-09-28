@@ -1,0 +1,69 @@
+Generic syntax ---
+It is available from Java SE 5 onwards.
+Represents Parameterized Types.
+Can Create Generic classes, interfaces, methods and constructors.
+In Pre-generics world , similar achieved via Object class reference.
+
+Syntax -- similar to c++ templates (angle brackets)
+eg : ArrayList<Emp> , HashMap<Integer,Account> .....
+1. Syntax is different than C++ --for nested collections only.
+2. NO code bloat issues unlike c++;
+
+
+Advantages
+Adds Type Safety to the code @ compile time
+
+Meaning : 
+1. Can add type safe code where type-mismatch errors(i.e ClassCastExceptions) are detected at compile time.
+2. No need of explicit type casting, as all casts are automatic and implicit.
+
+
+A generic class means that the class declaration includes a type parameter.
+eg --- class MyGeneric<T>
+{
+ private T ref;
+.....
+}
+T - type (generics - supports only reference type)
+OR
+class Pair<T,U>
+{
+  private T ref1;
+  private U ref2;
+.....
+}
+
+
+
+
+
+
+class MyGeneric<T,U> {
+private T ref1;
+private U ref2;
+....
+}
+
+
+
+T ,U ---type  --- ref type
+eg : ArrayList<Emp>
+
+Understand why generics with example.
+eg : Create a Holder class , that can hold ANY data type (primitive/ref type)
+eg : int (Integer) , String , Date , Customer,Fruit....
+eg : public class Holder 
+{
+   private Object ref;
+ .....
+}
+
+NOTE : Generic information is only meant for javac n not required for the runtime.
+Javac does "Type erasure" at the compile time n removes type information from .class files.
+
+
+
+
+
+
+
