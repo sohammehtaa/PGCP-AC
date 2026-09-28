@@ -1,0 +1,8 @@
+Why static methods can't be overridden in java ?
+
+Method overriding is a way to achieve dynamic method dispatch(i.e run time polymorphism) 
+Meaning which behaviour to choose or which method to choose for execution --this decision is taken at the run time depending upon type of the object by the JVM(late binding). Since it depends upon the type of the object , for static methods this concept is not applicable. (since they are not associated with any object)
+
+
+Overriding depends on having an instance of a class. The point of polymorphism is that you can subclass a class and the objects implementing those subclasses will have different behaviors for the same methods defined in the superclass (and overridden in the subclasses). A static method is not associated with any instance of a class so the concept is not applicable.
+

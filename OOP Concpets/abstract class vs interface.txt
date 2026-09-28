@@ -1,0 +1,22 @@
+Abstract Class vs. Interface
+
+Java provides and supports the creation of abstract classes and interfaces. Both implementations share some common features, but they differ in the following features:
+
+1. All methods in an interface are implicitly abstract. On the other hand, an abstract class may contain both abstract and non-abstract methods.
+
+2.A class may implement a number of Interfaces, but can extend only one abstract class.
+
+3.
+In order for a class to implement an interface, it must implement all its declared methods. However, a class may not implement all declared methods of an abstract class. Though, in this case, the sub-class must also be declared as abstract.
+Abstract classes can implement interfaces without even providing the implementation of interface methods.
+
+4.
+Variables declared in a Java interface is by default final. An abstract class may contain non-final variables.
+
+5.
+Members of a Java interface are public by default. A member of an abstract class can either be private, protected or public.
+
+6.
+An interface is absolutely abstract and cannot be instantiated, doesn't support a constructor. An abstract class also cannot be instantiated BUT can contain a constructor to be used while creating concrete(non abstract) sub class instance.
+
+ 

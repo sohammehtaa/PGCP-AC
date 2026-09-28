@@ -1,0 +1,80 @@
+Abstraction is the property with which only the essential details are displayed to the user. 
+The internal details or the non-essentials details  are not displayed to the user. 
+(Hiding complexities or hiding the implementation details from end user)
+
+Eg: An ATM  is considered as just money rendering machine rather than its internal complex details
+
+Consider a real-life example of a person walking to an ATM She only  knows how to withdraw / deposit money. But as the end user , she does not really need to know about how ATM connects with the underlying bank to inform about this transaction ...
+
+This is what abstraction is. 
+
+In Java , abstraction is already achieved using unit of encapsulation : class
+When you define methods(functionality) in the class , it's user(Client code using these methods) does not need to know about the actual implementation of the methods, it just needs to know about the invocation.
+
+It can be further achieved by interfaces and abstract classes. We can achieve 100% abstraction using interfaces.
+
+When to use abstract classes and abstract methods ?
+
+There are situations in which we will want to define a superclass that declares the structure of a given abstraction without providing a complete implementation of every method.(i.e only provide declaration) 
+Sometimes we will want to create a superclass that only defines a generalization form that will be shared by all of its subclasses, leaving it to each subclass to fill in the details.
+
+eg : BoundedShape & it's method area
+
+Abstract classes and Abstract methods :  
+abstract :  keyword in Java
+abstract methods ---methods only with declaration & no definition
+eg : public abstract double computeArea();
+private|static|final  abstract double area();//javac error
+
+Rules : 
+Any time a class has one or multilple abstract methods ---- class must be declared as abstract class.
+eg. public abstract class BoundedShape {....}
+
+Abstract classes can't be instantiated BUT abstract super class reference can  refer to concrete sub-class instance.
+eg : BoundedShape shape=new Rectangle(....);//legal
+BoundedShape shape2=new BoundedShape(..);//javac err : RHS
+
+Abstract classes CAN HAVE concrete(non-abstract) methods.
+
+Abstract classes MUST provide constructor/s to init its own private data members.(for creating concrete sub class instance)
+
+
+eg : Emp : empId, dept...: private 
+Mgr extends Emp : to init empId, dept ... : MUST supply a constr in Emp class.
+SalesMgr extends Mgr
+RnDMgr , HRMgr...
+
+-------------------------------------
+
+
+
+Can a class be declared as abstract & final ? NO 
+
+Can an abstract class be crerated with 100% concrete functionality?
+Yes 
+eg --- Event adapter classes / HttpServlet
+
+Use "abstract" keyword in Emp , Mgr ,Worker hierarchy & test it
+
+final  -- keyword in java 
+
+Usages
+
+1 final data member(primitive types) - constant.(immutable) - read only
+eg -- public final int DATA=123;
+DATA++;//javac error
+
+2. final methods ---can't be overridden.
+usage eg public final void show{.....} 
+This show() method CAN NOT be overridden by any of the sub classes
+eg -- Object class -- wait , notify ,notifyAll
+
+3. final class --- can't be sub-classed(or extended) -- i.e stopping inheritance hierarchy.
+eg -- String ,StringBuffer,StringBuilder
+eg : public class MyString extends String {...} //javac err
+
+4. final reference -- references can't be re-assigned.
+eg --final Emp e=new Mgr(.......);//up casting
+e=new Worker(.....);//compiler err
+
+

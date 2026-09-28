@@ -1,0 +1,16 @@
+Upcasting
+
+The most important aspect of inheritance is  the relationship expressed between the new class and the base class. This relationship can be summarized by saying, 
+The new class "IS A" type of the existing class.
+eg : Student is of Person type or Faculty is of Person type.
+
+This description is not just a fancy way of explaining inheritance—it’s supported directly by the language. 
+
+Meaning :
+Can we say ?
+Person p=new Student(....);//YES --up casting 
+sop(p);//dynamic method dispatch
+
+
+As another example, consider a base class called Fruit that represents any fruit, and a derived class called Mango. Because inheritance means that all of the methods in the base class are also available in the derived class, any message you can send to the base class can also be sent to the derived class. If the Fruit class has a taste( ) method, so will Mango. 
+This means we can accurately say that a Mango object is also a type of Fruit.

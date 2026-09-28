@@ -1,0 +1,88 @@
+static --- keyword in java
+Usages
+1. static data members --- Memory allocated only once at the class loading time --- not saved on object heap --- but in special memory area -- method area (meta space) . -- shared across all objects of the same class.
+Initialized to their default values(eg --double --0.0,char -0, boolean -false,ref -null)
+How to refer ? -- className.memberName
+
+eg -- class Emp {
+public static int idCounter;
+private String name;
+private int empId;
+...
+}
+If we hire 10 emps (i.e 10 emp objs  created in the heap)
+How many copies of
+idCounter : 1
+name  : 10
+empId : 10
+
+2. static methods --- Can be accessed w/o instantiation. (ClassName.methodName(....)) 
+Can't access 'this' or 'super' from within static method.
+
+
+Rules -- 1. Can static methods access other static members directly(w/o instance) -- YES
+2. Can static methods access other non-static members directly(w/o instance) --NO
+3. Can non static methods access static members directly ? -- YES
+eg : class A
+{
+  private int i;
+  private static int j;
+  public static void show()
+  {
+    
+     sop(i);
+     sop(j);
+  }
+}
+
+
+
+
+3. static import --- Can directly use  static member/s from the specified class.
+eg --
+//can access directly , ALL static members of the System class
+import static java.lang.System.*;
+import static java.lang.Math.sqrt;
+import java.util.Scanner;
+main(...)
+{
+   out.println(.....);
+   Scanner sc=new Scanner(in);
+   sqrt(12.34);
+   gc();
+   exit(0);
+   
+}
+4. static initializer block
+syntax --
+static {
+// block gets called only once at the class loading time , by JVM's classloader
+// usage --1.  to init all static data members 
+//& can add functionality -which HAS to be called precisely once.
+Use case : singleton pattern , J2EE for loading hibernate/spring... frmwork.
+}
+
+They appear -- within class definition & can access only static members directly.(w/o instance)
+A class can have multiple static init blocks(legal BUT not recommended)
+
+
+Regarding non-static initilizer blocks(instance initilizer block)
+syntax
+{
+//will be called per instantiation --- before matching constructor
+//Better alternative --- parameterized constructor.
+}
+
+5. static nested classes ---
+In Java , you can create a statically nested class within outer class.
+
+eg --
+class Outer {
+// static & non-static members
+  static class Nested
+  {
+     //can access ONLY static members of the outer class DIRECTLY(w/o inst)
+  }
+}
+
+

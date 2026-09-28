@@ -1,0 +1,34 @@
+instanceof -- keyword in java --used for testing run time type information.(RTTI)
+
+It is used to test whether the object is an instance of the specified type (class or subclass or interface).
+
+The instanceof in java is also known as type comparison operator(in run time)  because it compares the instance with type. It returns either true or false. 
+
+
+Meaning 
+In "a instanceof B", the expression returns true if the reference to which a points is an instance of class B, a subclass of B (directly or indirectly), or a class that implements the B interface (directly or indirectly).
+
+
+For null --instanceof returns false.
+For sub-class object --instanceof super class -- rets true
+For super-class object --instanceof sub class -- rets false
+
+
+eg ---Object <----Emp <---Mgr <---SalesMgr
+Object <---- Emp <--- Worker
+
+What will be o/p ?
+Emp e =new Mgr(...);
+e instanceof Mgr -
+e instanceof Emp -
+e instanceof Object -
+e instanceof SalesMgr  -
+e instanceof Worker -
+e=null;
+e instanceof Emp/Mgr/SalesMgr/Worker/Object  -
+
+
+
+
+
+
