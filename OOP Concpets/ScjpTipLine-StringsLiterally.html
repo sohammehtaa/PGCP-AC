@@ -1,0 +1,290 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"></head><body>
+<center><font size="+4" color="#804040"><b>The SCJP Tip Line</b></font><br><b><font size="+3">Strings, Literally</font></b><br><i>by Corey McGlone</i></center>
+<hr width="80%" align="center">
+This month, I'm going to tackle String literals and how they're handled in Java. If you read <a href="http://www.javaranch.com/journal/200408/Journal200408.jsp#a1" target="_blank">last month's SCJP Tip Line article</a>,
+you'll find that this article is a nice follow up all about Strings. If
+you didn't read it, no big deal - I plan to cover enough information
+here to get you up to speed. String literals are a little "special" in
+Java in the way that they are treated. For the most part, the
+information contained in this post <i>is not</i> on the SCJP exam, but I see it on mock exams all the time and it comes up in the <a href="http://saloon.javaranch.com/cgi-bin/ubb/ultimatebb.cgi?ubb=forum&amp;f=24" target="_blank">SCJP Forum</a> quite often. Besides, it's just darned interesting stuff.<br>
+<br>
+Let's start off by asking a simple question. <i>What is a String Literal?</i>
+A String literal is a sequence of characters between quotation marks,
+such as "string" or "literal". You've probably used String literals
+hundreds of times in your own applications. You might not, however,
+have realized just how special String literals are in Java.
+<h3>Strings are Immutable</h3>
+<i>So what makes String literals so special?</i> Well, first of all,
+it's very important to remember that String objects are immutable. That
+means that, once created, a String object cannot be changed (short of
+using something like reflection to get at private data). Immutable, you
+say? Unchangable? What about this code?<br>
+<br>
+<table align="center" border="1" cellpadding="0" cellspacing="0">
+    <tbody><tr>
+        <td bgcolor="#e4d2b8">
+            <font size="-1"><b>Source Code</b></font>
+        </td>
+    </tr>
+    <tr>
+        <td bgcolor="#f0e6d5">
+            <pre>            
+public class ImmutableStrings
+{
+    public static void main(String[] args)
+    {
+        String start = "Hello";
+        String end = start.concat(" World!");
+        System.out.println(end);
+    }
+}
+
+// Output
+
+Hello World!
+            </pre>
+        </td>
+    </tr>
+</tbody></table>
+<br>
+Well look at that, the String changed...or did it? In that code, no
+String object was ever changed. We start by assigning "Hello" to our
+variable, <font face="courier">start</font>. That causes a new String object to be created on the heap and a reference to that object is stored in <font face="courier">start</font>. Next, we invoke the method <font face="courier">concat(String)</font> on that object. Well, here's the trick, if we look at the <a href="http://java.sun.com/j2se/1.4.2/docs/api/java/lang/String.html" target="_blank">API Spec for String</a>, you'll see this in the description of the <font face="courier">concat(String)</font> method:<br>
+<font face="arial">
+<blockquote>
+Concatenates the specified string to the end of this string. <br>
+If the length of the argument string is 0, then this String object is returned. <b>Otherwise, a new String object is created,</b>
+representing a character sequence that is the concatenation of the
+character sequence represented by this String object and the character
+sequence represented by the argument string.
+<br><br>
+Examples: 
+<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;"cares".concat("s") returns "caress"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;"to".concat("get").concat("her") returns "together"
+ <br><br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;str - the String that is concatenated to the end of this String. <br>
+Returns:<br>&nbsp;&nbsp;&nbsp;&nbsp;a
+string that represents the concatenation of this object's characters
+followed by the string argument's characters.
+</blockquote>
+</font>Notice the part I've highlighted in bold. When you concatenate
+one String to another, it doesn't actually change the String object, it
+simply creates a new one that contains the contents of both of the
+original Strings, one after the other. That's exactly what we did
+above. The String object referenced by the local variable <font face="courier">start</font> never changed. In fact, if you added the statement <font face="courier">System.out.println(start);</font> after you invoked the concat method, you would see that <font face="courier">start</font>
+still referenced a String object that contained just "Hello". And just
+in case you were wondering, the '+' operator does the exact same thing
+as the concat() method.<br>
+<br>
+Strings really are immutable.
+<h3>Storage of Strings - The String Literal Pool</h3>
+If you've done any preparation for the SCJP exam (and quite possibly
+even if you haven't), you've probably heard of the "String Literal
+Pool." <i>What is the String Literal Pool?</i>
+Most often, I hear people say that it is a collection of String
+objects. Although that's close, it's not exactly correct. Really, it's
+a collection of <i>references</i> to String objects. Strings, even
+though they are immutable, are still objects like any other in Java.
+Objects are created on the heap and Strings are no exception. So,
+Strings that are part of the "String Literal Pool" still live on the
+heap, but they have references to them from the String Literal Pool.<br>
+<br>
+Yeah, so that doesn't really explain what the pool is, or what it's
+for, does it? Well, because String objects are immutable, it's safe for
+multiple references to "share" the same String object. Take a look at
+this example:<br>
+<br>
+<table align="center" border="1" cellpadding="0" cellspacing="0">
+    <tbody><tr>
+        <td bgcolor="#e4d2b8">
+            <font size="-1"><b>Source Code</b></font>
+        </td>
+    </tr>
+    <tr>
+        <td bgcolor="#f0e6d5">
+            <pre>            
+public class ImmutableStrings
+{
+    public static void main(String[] args)
+    {
+        String one = "someString";
+        String two = "someString";
+        
+        System.out.println(one.equals(two));
+        System.out.println(one == two);
+    }
+}
+
+// Output
+
+true
+true
+            </pre>
+        </td>
+    </tr>
+</tbody></table>
+<br>
+In such a case, there is really no need to make two instances of an
+identical String object. If a String object could be changed, as a
+StringBuffer can be changed, we would be forced to create two separate
+objects. But, as we know that String objects cannot change, we can
+safely share a String object among the two String references, <font face="courier">one</font> and <font face="courier">two</font>. This is done through the String literal pool. Here's how it is accomplished:<br>
+<br>
+When a .java file is compiled into a .class file, any String literals
+are noted in a special way, just as all constants are. When a class is <a href="http://java.sun.com/docs/books/jls/second_edition/html/execution.doc.html#44459" target="_blank">loaded</a>
+(note that loading happens prior to initialization), the JVM goes
+through the code for the class and looks for String literals. When it
+finds one, it checks to see if an equivalent String is already
+referenced from the heap. If not, it creates a String instance on the
+heap and stores a reference to that object in the constant table. Once
+a reference is made to that String object, any references to that
+String literal throughout your program are simply replaced with the
+reference to the object referenced from the String Literal Pool.<br>
+<br>
+So, in the example shown above, there would be only one entry in the
+String Literal Pool, which would refer to a String object that
+contained the word "someString". Both of the local variables, <font face="courier">one</font> and <font face="courier">two</font>,
+would be assigned a reference to that single String object. You can see
+that this is true by looking at the output of the above program. While
+the equals() method checks to see if the String objects contain the
+same data ("someString"), the <font face="courier">==</font> operator,
+when used on objects, checks for referential equality - that means that
+it will return true if and only if the two reference variables refer to
+the <i>exact same object</i>. In such a case, the references are equal. From the above output, you can see that the local variables, <font face="courier">one</font> and <font face="courier">two</font>, not only refer to Strings that contain the same data, they refer to the same object.<br>
+<br>
+Graphically, our objects and references would look something like this:<br>
+<br>
+<center><img src="ScjpTipLine-StringsLiterally_files/stringLiterals1.jpg" border="1"></center>
+<br>
+Note, however, that this is a special behavior for <i>String Literals</i>. Constructing Strings using the "new" keyword implies a different sort of behavior. Let's look at an example:<br>
+<br>
+<table align="center" border="1" cellpadding="0" cellspacing="0">
+    <tbody><tr>
+        <td bgcolor="#e4d2b8">
+            <font size="-1"><b>Source Code</b></font>
+        </td>
+    </tr>
+    <tr>
+        <td bgcolor="#f0e6d5">
+            <pre>            
+public class ImmutableStrings
+{
+    public static void main(String[] args)
+    {
+        String one = "someString";
+        String two = new String("someString");
+        
+        System.out.println(one.equals(two));
+        System.out.println(one == two);
+    }
+}
+
+// Output
+
+true
+false
+            </pre>
+        </td>
+    </tr>
+</tbody></table>
+<br>
+In this case, we actually end up with a slightly different behavior
+because of the keyword "new." In such a case, references to the two
+String literals are still put into the constant table (the String
+Literal Pool), but, when you come to the keyword "new," the JVM is
+obliged to create a new String object at run-time, rather than using
+the one from the constant table.<br>
+<br>
+In such a case, although the two String references refer to String objects that contain the same data, "someString", they <i>do not</i> refer to the same object. That can be seen from the output of the program. While the equals() method returns true, the <font face="courier">==</font>
+operator, which checks for referential equality, returns false,
+indicating that the two variables refer to distinct String objects.<br>
+<br>
+Once again, if you'd like to see this graphically, it would look
+something like this. Note that the String object referenced from the
+String Literal Pool is created when the class is loaded while the other
+String object is created at runtime, when the "new String..." line is
+executed.<br>
+<br>
+<center><img src="ScjpTipLine-StringsLiterally_files/stringLiterals2.jpg" border="1"></center>
+<br>
+If you'd like to get both of these local variables to refer to the same object, you can use the <a href="http://java.sun.com/j2se/1.4.2/docs/api/java/lang/String.html#intern%28%29" target="_blank">intern()</a> method defined in String. Invoking <font face="courier">two.intern()</font>
+will look for a String object referenced from the String Literal Pool
+that has the same value as the one you invoked the intern method upon.
+If one is found, a reference to that String is returned and can be
+assigned to your local variable. If you did so, you'd have a picture
+that looks just like the one above, with both local variables, <font face="courier">one</font> and <font face="courier">two</font>,
+referring to the same String object, which is also referenced from the
+String Literal Pool. At that point, the second String object, which was
+created at run-time, would be eligible for garbage collection.<br>
+<h3>Garbage Collection</h3>
+<i>What makes an object eligible for garbage collection?</i> If you're
+preparing for the SCJP exam (or even if you're not), the answer to that
+question should roll right off your tongue. An object is eligible for
+garbage collection when it is no longer referenced from an active part
+of the application. <i>Anyone see what is special about garbage collection for String literals?</i> Let's look at an example and see if you can see where this is going.<br>
+<br>
+<table align="center" border="1" cellpadding="0" cellspacing="0">
+    <tbody><tr>
+        <td bgcolor="#e4d2b8">
+            <font size="-1"><b>Source Code</b></font>
+        </td>
+    </tr>
+    <tr>
+        <td bgcolor="#f0e6d5">
+            <pre>            
+public class ImmutableStrings
+{
+    public static void main(String[] args)
+    {
+        String one = "someString";
+        String two = new String("someString");
+        
+        one = two = null;
+    }
+}
+            </pre>
+        </td>
+    </tr>
+</tbody></table>
+<br>
+<i>Just before the main method ends, how many objects are available for garbage collection? 0? 1? 2?</i> <br>
+<br>
+The answer is 1. Unlike most objects, String literals always have a
+reference to them from the String Literal Pool. That means that they <i>always</i>
+have a reference to them and are, therefore, not eligible for garbage
+collection. This is the same example as I used above so you can see
+what our picture looked liked originally there. Once we assign our
+variables, <font face="courier">one</font> and <font face="courier">two</font>, to null, we end up with a picture that looks like this:<br>
+<br>
+<center><img src="ScjpTipLine-StringsLiterally_files/stringLiterals3.jpg" border="1"></center>
+<br>
+As you can see, even though neither of our local variables, <font face="courier">one</font> or <font face="courier">two</font>,
+refer to our String object, there is still a reference to it from the
+String Literal Pool. Therefore, the object is not elgible for garbage
+collection. The object is always reachable through use of the intern()
+method, as referred to earlier.
+<h3>Conclusion</h3>Like I said at the outset of this article,
+virtually none of this information is included on the SCJP exam.
+However, I constantly see this question coming up in the SCJP forum and
+on various mock exams. These are a few of the highlights you can keep
+in mind when it comes to String literals:
+<ul>
+<li>Equivalent String Literals (even those stored in separate classes in separate packages) will refer to the same String object.</li>
+<li>In general, String Literals are not eligible for garbage collection. Ever.</li>
+<li>Strings created at run-time will always be distinct from those created from String Literals.</li>
+<li>You can reuse String Literals with run-time Strings by utilizing the intern() method.</li>
+<li>The best way to check for String equality is to use the equals() method.</li>
+</ul>
+Be sure to check out these resources, as well:<br>
+<br>
+<a href="http://java.sun.com/j2se/1.4.2/docs/api/java/lang/String.html" target="_blank">API Spec for String</a><br>
+<a href="http://java.sun.com/docs/books/jls/second_edition/html/lexical.doc.html#101083" target="_blank">JLS, &amp;sect3.10.5 String Literals</a><br>
+<br>
+Tune in to the <a href="http://radio.javaranch.com/channel/corey" target="_blank">SCJP TipLine</a> for more updates.<br>
+<br>
+Until next time,<br>
+Corey
+</body></html>
