@@ -1,0 +1,60 @@
+java.util.LinkedList<E>
+
+Doubly-linked list implementation of the List and Deque interfaces. 
+It is an ordered collection and supports duplicate elements. 
+It stores elements in Insertion order.
+It supports adding null elements. 
+It supports index based operations.
+Typical use case -- stack or queue.
+It does not implement RandomAccess interface.(ArrayList class does!) 
+So it represents sequential access list.
+
+
+When we try to access an element from a LinkedList, searching that element starts from the beginning or end of the LinkedList based on whichever is closer to the specified index.(eg : list.get(i))
+
+Structure of LinkedList --refer to diag.
+
+It supports all of List API methods , as seen already in ArrayList.
+
+Java LinkedList methods , inherited from Deque
+
+The following methods are specific to LinkedList class which are inherited from Deque interface:
+
+void addFirst(E e): Inserts the specified element at the beginning of this list.
+void addLast(E e): Inserts the specified element at the end of this list.
+E getFirst(): Retrieves, but does not remove, the first element of this list. This method differs from peekFirst only in that it throws an exception if this list is empty.
+E getLast(): Retrieves, but does not remove, the last element of this list. This method differs from peekLast only in that it throws an exception if this list is empty.
+E removeFirst(): Removes and returns the first element from this list.
+E removeLast(): Removes and returns the last element from this list.
+boolean offerFirst(E e): Inserts the specified element at the front of this list.
+boolean offerLast(E e): Inserts the specified element at the end of this list.
+E pollFirst(): Retrieves and removes the first element of this list, or returns null if this list is empty.
+E pollLast(): Retrieves and removes the last element of this list, or returns null if this list is empty.
+E peekFirst(): Retrieves, but does not remove, the first element of this list, or returns null if this list is empty.
+E peekLast(): Retrieves, but does not remove, the last element of this list, or returns null if this list is empty.
+
+Java LinkedList  Usecases
+
+Best Usecase scenario:-
+
+When our frequently used operation is adding or removing elements in the middle of the List, LinkedList is the best class to use.
+
+Why? Because we don t need to do more shifts to add or remove elements at the middle of the list. 
+
+Worst Usecase scenario:-
+
+When our frequently used operation is retrieving elements from list, then LinkedList is the worst choice.
+
+Why? Because LinkedList supports only sequential access, does NOT support random access. 
+
+NOTE:-
+LinkedList implements List, Deque, But it does NOT implement RandomAccess interface.
+
+How to use LinkedList as a queue or stack ?
+When a deque is used as a queue its  FIFO (First-In-First-Out)Elements are added at the end of the deque and removed from the beginning.
+Which method will you use ?????????
+
+When a deque is  used as stack its LIFO (Last-In-First-Out)  (Preferred to the legacy Stack class.)
+When a deque is used as a stack, elements are pushed and popped from the beginning of the deque.
+Which method will you use ?????????
+

@@ -1,0 +1,28 @@
+What is Hashing?
+Hashing is defined as the process of transforming one value into another based on a particular key.
+OR
+It can be also defined as transforming arbitrary sized data to a fixed size , typically an int value.
+
+Hash functions are a important part of cryptography (used in security)  and Java provides excellent support for them. 
+
+In Java, hashing is a common way to store data in collections such as a HashMap and HashSet. 
+
+
+A hash is a function that converts an input value into an output value that is usually more compact , and is designed to be unique for each input value. 
+
+Although hashing collisions are unavoidable(rare), ideal hash function should attempt to reduce collisions, which implies that different input values should not generate the same hash code.
+
+Typical use cases :  storing encrypted passwords in DB, creating unique identifiers(UUID), and verifying data integrity.
+eg :  When a user signs up ,  with email n password , password is  encrypted using a hash function (eg : SHA256 /SHA512)  and stored in DB . It's a one way hash function
+During user's sign in , to verify the password entered by the user, again it's hashed n compared with DB password.
+(i.e this generated hash code is compared with the stored hash code)
+
+A hash function produces  a hash value/hash code/ hash. 
+
+A hash table is a data structure that stores key-value pairs, where each key is used to calculate an index in the table that corresponds to the location of the value.
+
+Even though ,  there are several types of hash functions, they can accept a variable-sized input and produce a fixed-sized output. The output size is usually smaller than the input size, which makes hashing a space-efficient way to store data.
+
+Hash functions are designed to be one-way functions, meaning that it should be very difficult to compute the original input from the output (hash code). Very rarely , collisions can occur if two different inputs result in the same output.
+
+

@@ -1,0 +1,63 @@
+Case study - Customer management system
+It will be built , over next few days.
+
+Typical  Options
+1. Sign up (customer registration)
+Accept customer details
+Validate all inputs.
+In case of successful validations , display customer details via toString or display error mesg via custom exception.
+
+2. Sign in (login)
+i/p : email n password
+o/p : Successful login message or error message(Invalid email or password -via custom exception)
+
+3. Change password
+i/p : email n old password n new password
+o/p : Successful password updation  or error message(Invalid email or password -via custom exception)
+
+4. Un subscribe customer
+i/p : customer email
+
+5. Display all customers.
+and later many more.....
+0. Exit 
+
+NOTE - 
+1.Customer should be assigned system generated (auto increment) customer id : int
+Store - first name, last name email(string),password(string),registrationAmount(double),dob(LocalDate),plan(ServicePlan : enum)
+Unique ID - email
+
+2. ServicePlans n their charges -
+SILVER : 1000 
+GOLD : 2000
+DIAMOND : 5000
+PLATINUM : 10000
+
+
+3. Add suitable custom exception class/es
+
+4. validation rules
+(No need to add all the validation rules initially. You can just add the easilest one n test it out)
+
+4.1 no dup customers 
+(i.e if the customer tries to register using existing email , raise custom exception)
+
+4.2 Validate plan
+plan must be of supported types
+eg : public static ServicePlan validatePlan(String plan) throws IllegalArgumentException
+{
+  return ServicePlan.valueOf(plan.toUpperCase());
+}
+
+4.3 reg amount must match with the plan
+
+4.4 email must contain @ and it should end with either
+.com | .org | .net
+
+ 
+
+
+5. Create a Tester(CustomerManagementSystem) , with UI , using Scanner
+
+
+

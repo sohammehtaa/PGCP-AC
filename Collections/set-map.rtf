@@ -1,0 +1,319 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Verdana;}}
+{\*\generator Riched20 10.0.22621}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\f0\fs32\lang9 Today's Topics\par
+1. Revise Sets n continue with Hashing algorithm in Java\par
+2. Maps Handling\par
+3. Advanced Generics\par
+\par
+1.Hashing algorithm with the contract between hashCode n equals\par
+\par
+2. Map features n implementation classes\par
+(Solve objectives from Banking case study)\par
+Porting banking case study from List ->Map\par
+HashMap<K,V> -for storing bank accounts\par
+Key -Integer (acct no - UID - PK)\par
+Value - BankAccount\par
+3. Advanced Generics\par
+Refer -  "generics sequence.txt"\par
+3.1  Generic methods \par
+eg : Arrays.asList , Collections.sort\par
+Solve Arrays.asList\par
+\par
+\par
+3.Create GenericUtils class - non generic class\par
+--Add a static method\par
+3.1  Add a method to print all elements from any of the following\par
+ Test cases : AL<String> , LL<Integer> , Vector<LocalDate> , HS<Double> , LHS<Emp> ,TS<Fruit> ......\par
+\par
+eg : public class GenericUtils \{\par
+  //static method \par
+  public static void printAllElements(Collection<Object> collection) \{\par
+    for(Object o : collection)\par
+    sop(o);\par
+ \}\par
+\}\par
+Till this point , no err !\par
+List<Integer> intList=Arrays.asList(1,2,3,4,5,7,8);\par
+printAllElements(intList);//javac err !\par
+Reason : Even though Object is a universal super class of all Java classes (i.e Integer IS-A Object) , Collection<Object> IS NOT a super type of Collection<Integer>\par
+Meaning : inheritance in generics --works differently than otherwise\par
+Why -- generic types(generic collections) are : Invariant (i.e can't be replaced by any other types)\par
+\par
+Solutions for the flexibilty\par
+1. generic method : <T>\par
+//static method \par
+  public static <T> void printAllElements(Collection<T> collection) \{\par
+    for(T o : collection)\par
+    sop(o);\par
+ \}\par
+OR\par
+2  wild card : ?\par
+Represents ANY un known type , that can be replaced by any Java Type\par
+\par
+\par
+2. Emp inheritance hierarchy\par
+write static method in the Utils class --\par
+to return sum of salaries of all emps from the specified list.\par
+\par
+Test cases -- AL<Mgr> , Vector<TempWorker> , LinkedList<SalesMgr> ......\par
+public static double computeSumOfSalaries(List<? extends Emp> emps)\par
+\{\par
+  double sum=0;\par
+ for(Emp o : emps)  \par
+  sum += o.computeSalary();\par
+  return sum;\par
+\}\par
+\par
+AL<Mgr> mgrs=new AL<>();\par
+mgrs.add(m1)......\par
+computeSumOfSalaries(mgrs);\par
+\par
+? => un bounded wild card (i.e can be replaced by ANY type, no restrictions!)\par
+extends => upper bound\par
+super => lower bound\par
+\par
+? extends T => T or any of it's sub type (restricted freedom --upper bounded )\par
+extends : used for co varinace (or co variant)\par
+\par
+super => lower bound\par
+? super T => T or it's super type (restricted freedom --lower bounded )\par
+\par
+Is there any rule regarding when to use extends (upper bound) or super (lower bound) ?\par
+Yes !\par
+Any time you are accessing the elements from the collection --use extends\par
+=> co varinace\par
+Any time you are adding the elements to the collection --use super\par
+=> contra variance\par
+If you want to do both (i.e add n retrieve) : use the actual type directly\par
+=> in varinace \par
+\par
+\tab\par
+2. Add a method to find sum of salary of emps from any List \par
+Test cases : AL<Mgr> ,LL<Worker> , Vector<SM> ....\par
+\par
+\par
+public static double computeSalarySum(List<Emp> emps)\par
+\{\par
+  double sum=0;\par
+  for(Emp e : emps)\par
+   sum += e.computeNetSal();\par
+  return sum;\par
+\}\par
+\par
+? => any unknow type , can be replaced by any java type\par
+extends => upper bound\par
+super => lower bound\par
+\par
+? extends T => T or it's sub type\par
+? super T => T or it's super type\par
+\par
+eg : Ctor of ArrayList<E> \par
+ArrayList(Collection<? extends E> coll)\par
+E : Emp\par
+Meaning : Creates populated AL of type Emp from\par
+ANY Collection(eg : List n Set vimplementation classes) of type\par
+Emp or any of its sub type(eg : Mgr, Worker, SalesMgr....)\par
+\par
+\par
+3. Explain :\par
+public ArrayList\u8203?(Collection<? extends E> c)\par
+E : Emp \par
+=> ????\par
+\par
+4. Add a method to hire a any worker to the list\par
+What should be the type of the List ?\par
+\par
+Solve -\par
+T : Emp \par
+AL<? extends Emp> list = ????\par
+What all are legal options of RHS ?\par
+1. AL<Emp> : \par
+2. AL<Mgr>\par
+3. AL<Worker>\par
+4. AL <SalesMgr>\par
+5. AL <Object>\par
+6. AL<Fruit>\par
+7. AL<Vehicle>\par
+Ans :\par
+\par
+super : represents lower bound in generics\par
+? super T => T or it's super types\par
+\par
+eg\par
+AL<? super Mgr> list = ????\par
+What all are legal options of RHS ?\par
+1. AL<Emp> : \par
+2. AL<Mgr>\par
+3. AL<Worker>\par
+4. AL <SalesMgr>\par
+5. AL <Object>\par
+6. AL<Fruit>\par
+7. AL<Vehicle>\par
+Ans : \par
+\par
+\par
+2. \par
+Solve (What will happen)\par
+Given : Emp hierarchy\par
+Emp e =new Mgr(...);\par
+e=new Worker(...);\par
+List<Emp> emps=new ArrayList<>();\par
+emps.add(new Mgr(...));\par
+emps.add(new TempWorker(...));\par
+\par
+Understanding inheritance/flexibilty in generics -\par
+ArrayList<Emp> emps=new ArrayList<Mgr>();\par
+Reason : \par
+\par
+ArrayList<Object> emps=new ArrayList<Mgr>();//javac err !\par
+List<Emp> emps=new Vector<Worker>();//javac err !\par
+emps=new LinkedList<SalesMgr>();//javac err !\par
+\par
+Above states --loss of flexibility!!!\par
+So what's the solution for getting back this flexibility ?\par
+wild card in generics : ? \par
+? => any unknown type \par
+How do you create list of unknown type ???\par
+List<?> anyList;\par
+anyList=new ArrayList<Mgr>();//no err\par
+anyList=new Vector<Worker>();\par
+anyList=new LinkedList<SalesMgr>();\par
+anyList=new HashSet<>();//javac err , HS IS NOT a List\par
+anyList=new Vector<Fruit>();//works\par
+\par
+List<T> anyList;\tab\par
+\par
+More on generics\par
+Solve : \par
+Create Utils class --Add static method\par
+1. Add a method to print all elements from any of the following\par
+ Test cases : AL<String> , LL<Integer> , Vector<LocalDate> , HS<Double> , LHS,TS\par
+eg : method arg : Collection<?>\par
+\par
+\par
+1.5 Add a method to count the number of occurrences of elem in any List\par
+(lab work )\par
+\par
+\tab\par
+2. Add a method to find sum of salary of emps from any List \par
+Test cases : AL<Mgr> ,LL<Worker> , Vector<SM> ....\par
+\par
+OR \par
+display taste() of all the fruits from the basket : any List\par
+public static void displayTaste(List<? extends Fruit> basket)\par
+\{\par
+  for (Fruit f : basket)\par
+   sop(f.taste());\par
+\}\par
+\par
+\par
+Explain :\par
+public ArrayList\u8203?(Collection<? extends E> c)\par
+E : Emp \par
+=>This ctor  creates  : a populated AL , populated from ANY Collection (AL,LL,Vector : no err\par
+HS,LHS,TS : no err\par
+HM,LHM ,TM : err)\par
+having generic type : Emp or it's subtype(eg : Mgr,Worker.....)\par
+\par
+\par
+\par
+2.5 Conside this method :\par
+public static double sumOfSalaries(List<? extends Emp> list) \{\par
+\tab\tab double sum=0;\par
+\tab\tab for (Emp e : list)\par
+\tab\tab\tab sum += e.computeSalary();\par
+\tab\tab return sum;\par
+\}\par
+For calling this method from the Tester , You will be able to pass ANY List (AL | LL | Vector) of generic type : choose incorrect from below options\par
+1. Emp\par
+2. Mgr\par
+3. SalesMgr\par
+4. Object\par
+5. Worker\par
+6. HRMgr\par
+7. TempWorker\par
+8. Date\par
+9. LocalDate\par
+10. PermanentWorker\par
+\par
+Ans : 4 ,8  , 9\par
+\par
+Now answer this : \par
+public static double sumOfSalaries(List<? extends Emp> list) \{\par
+\tab\tab double sum=0;\par
+\tab\tab for (Emp e : list)\par
+\tab\tab\tab sum += e.computeSalary();\par
+\tab\tab list.add(...);//what can be the legal replacement ?\par
+\tab\tab return sum;\par
+\}\par
+\par
+1. Emp\par
+2. Mgr\par
+3. SalesMgr\par
+4. Object\par
+5. Worker\par
+6. HRMgr\par
+7. TempWorker\par
+8. Date\par
+9. LocalDate\par
+10. PermanentWorker\par
+\par
+Ans : none of above !\par
+\par
+Why ? : Since the method arg : List<? extends Emp> => caller can pass ANY List of Emp or any of it's sub types (eg : arg : List<Mgr> : u can't add a worker, Emp , Object  to this list \par
+List<PermanentWorker> " u can't pass Emp , Mgr , Worker....\par
+\par
+So what's the bottom line ? \par
+\par
+When the argument : uses extends (upper bound)  : Collection<? extends E>\par
+The Collection acts as read only . You CANT add any elems to it !\par
+o.w : javac err! \par
+\par
+PECS : Producer extends Consumer supers\par
+Producer(Reader) => Collection acting as a producer of data  ,i.e you can only access(Read) data\par
+extends \par
+\par
+Consumer(Writer) => Collection acting as a consumer of data  ,i.e you can only add elems\par
+super\par
+\par
+\par
+\par
+\par
+eg : Java API eg :\par
+Collections.addAll\par
+public static <T> boolean addAll\u8203?(Collection<? super T> c, T... elements)\par
+=> Collection : consumer (super)\par
+T : Orange\par
+ boolean addAll\u8203?(Collection<? super Orange> c, Orange... elements)\par
+Legal method arg : Any Collection(any List / any Set) of generic type : Orange | Fruit | Object \par
+To such a Collection : what all can u add ? Orange or it's subtypes (eg : Mandarine)\par
+\par
+eg : MUST Collections.copy(Collection<? super T> dest ,Collection<? extends T> src)\par
+\par
+\par
+\par
+\par
+\par
+\tab\par
+3. Add a method to add a sales mgr to the list\par
+What should be the type of the List ?\par
+\par
+4. Add a method to add any worker to the list (i.e TempWorker | PermWorker)\par
+What should be the type of the List ?\par
+public static void addWorker(List<? super Worker> list)\par
+\{\par
+   list.add(new Worker(..);//no err\par
+   list.add(new TempWorker(..);//no err\par
+   list.add(new PermWorker(..);//no err\par
+    list.add(new Object();//err\par
+list.add(new Emp(..); // emp : concrete class : err\par
+list.add(new SalesMgr(....)); //err\par
+\}\par
+-------------------------\par
+\par
+\par
+\par
+\par
+\par
+}
+ 

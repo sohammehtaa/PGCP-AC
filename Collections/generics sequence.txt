@@ -1,0 +1,228 @@
+1. Generic Method 
+What is it ? A Method which has it's own type parameter.
+Can it exist in a non generic class? : Yes
+
+Generic method example : Arrays.toList , Collections.sort
+java.util.Arrays - non generic class
+Generic method from a non generic class(Arrays)
+public static <T>  List<T> asList(T... a)
+Type declaration fits between method modifiers n ret type
+
+i/p : T... a : This method can accept : no args or T[] or T t1,T t2....
+o/p : FIXED size list
+How will you use it for getting a fixed size List of integers or doubles or strings?
+int[] data={10,1,2,3,4,5,67,11}
+
+
+  
+
+
+2. More about generic syntax : ? , extends ,super
+Given :
+Emp <---- Mgr <----SalesMgr
+Emp <---- Worker <---- TempWorker
+
+
+What will happen ?
+Emp e =new Mgr();
+e.computeSalary();
+e=new TempWorker();
+e.computeSalary();
+
+
+
+ArrayList<Emp> l1=new ArrayList<>();//what's the inferred type of the RHS ? :
+ArrayList<Mgr> l2=new ArrayList<>();//what's the inferred type of the RHS ? : 
+l1=l2; //what will happen ?
+Object o=new Mgr();
+ArrayList<Object> l3=new ArrayList<>();//what's the inferred type of the RHS ? : 
+l3=l2; //what will happen ?
+l3=l1; //what will happen ?
+
+What does it imply ?
+Does inheritance in generics work in the same manner as learnt earlier ?
+
+Wild card in generics comes to the rescue!
+Enter "?"
+What is it ? 
+It's a wild card in generic syntax. Can be replaced by ANY type.
+Represents any unknown type.
+
+Now what will happen ?
+ArrayList<?> l1=new ArrayList<>();//what's the implicit type of the RHS ? : 
+ArrayList<Mgr> l2=new ArrayList<>();
+l1=l2;
+
+? : is referred to as un bounded wild card.
+
+
+Hands on
+1. Shuffle all the elements of the list randomly.
+Collections class Method
+public static void shuffle​(List<?> list)
+
+2. Collections class
+reverse method
+
+3. Write a static method in GenericUtils class : to print elements of ANY List(ArrayList/LinkedList/Vector) of ANY type
+
+Test it with tester : AL<Integer> , LinkedList<String>,Vector<Double> ....
+
+4. Add "computeTotalSalary" method in Emp based hierarchy
+Add static method in GenericUtils class which can accept ANY List(AL/LL/Vector) of any type of emps(Emp /Mgr / SalesMgr / Worker/ TempWorker) , computes salary of all of emps supplied via list.
+
+Test it with tester : AL<Mgr> , Vector<HRMgr> , LinkedList<TempWorker>.....
+
+
+3. Write a method to Find max number from List of any numbers (integer / float / double ...) n return it to the caller.
+ (Lab exercise)
+
+4. Write a method to Find max element from numbers / strings/ dates
+Lab Exercise
+
+5. Write a method that counts the number of elements (stored in Collection) that are greater than a specified element elem.
+eg : Count no of strings in a collection of strings > specified string (i.e as per lexicographical ordering)
+Count no of doubles  in a collection of doubles > specified double value
+Count no of dates in a collection of dates > specified date (i.e after a specified date)
+...
+
+6. eg of bounded type in Collection Framework
+ArrayList<E> : generic class
+public ArrayList​(Collection<? extends E> c)
+E : Emp 
+? extends Emp
+Meaning : This ctor will create a non-empty AL of Emp type , from AL/LL/Vector/HS/LHS/TS (any Collection imple class) , from any type : Emp or it's sub type
+Q : Will you be able populate AL<Mgr> from 
+1. AL<Emp>
+2. HS<Worker>
+3. LL<SalesMgr>
+4. Vector<Fruit>
+5. TS<Object>
+6. LHS<HRMgr>
+Ans : 
+
+
+
+Generic syntax :
+? : wild card in generic syntax (it can be replaced by ANY type) : un bounded wild card , represents unknown type
+
+extends : Represents upper bound
+
+super : Represents lower bound
+
+
+? extends E : ANY type E or its sub type 
+? super E : E or its super type
+eg : ? extends Emp => Emp or it's sub type(Mgr,Worker.....)
+? super Mgr => Mgr or it's super type (Emp , Object)
+
+
+7. Write a generic method to add all of the specified elements to the specified List.
+eg - Add variable no of  fruits (Mango/Apple/Orange) to the Fruit Basket 
+Add any emp(Mgr/Worker/SalesMgr/TempWorker ..) to the employee list.
+
+What will happen ? (javac error or no error?)
+1. Vector<Mgr> mgrs=new Vector<>();
+mgs.add(m1)....m10
+ArrayList<Emp> emps=new AL<>(mgrs);
+
+2. HashSet<HRMgr> hrMgrs=new HS<>();
+hrMgrs.add(hrm1)....hrm10
+ArrayList<Emp> emps=new AL<>(hrMgrs);
+3.
+ArrayList<Mgr> mgrs=new AL<>();
+mgrs.add(m1).....m10
+LinkedList<HRMgr> hrMgrs=new LinkedList<>(mgrs);
+
+Ans this !
+ArrayList<Mgr> mgrs=new AL<>();
+mgrs.add(m1).....m10
+ArrayList<? extends Emp> emp=new AL<>(mgrs);
+ArrayList<? extends Object> objs=mgrs;
+
+
+
+3.Collections class(Non generic class) :  Can contain a generic Method
+eg : super keyword in generics : lower bound
+Method of Collections class
+public static <T> void sort(List<T> list,Comparator<? super T> c)
+generic method : 
+where does type declaration fit ? : It's placed between method modifiers n ret type
+1st arg : List<T> list : You can pass List of ANY type (eg : AL/LL/Vector : ??
+HS/LHS/TS : ??
+HM/LHM/TM : ??) : 
+Can you pass List of the following types :  
+T --Customer , Student(extends Person) , BankAccount,Flight, Movie,Person , DacStudent (extends Student)
+if above classes have not imple Comparable or Comparator : 
+
+2nd arg : Comparator<? super T> c
+Instance of the class which imple Comparator
+eg : Collections.sort(studentList,comp);//comp : imple Comparator<Student> 
+ Collections.sort(studentList,comp);//comp : imple Comaprator<Fruit> 
+Collections.sort(studentList,comp);//comp : imple Comaprator<Person> 
+Collections.sort(studentList,comp);//comp : imple Comaprator<Object> 
+Collections.sort(studentList,comp);//comp : imple Comaprator<eDacStudent> 
+
+
+More Details
+
+? : wild card (represents ANY unknown type) => un bounded wildcard
+
+extends => upper bound (type of the upper bound super class / interface)
+If your collection(list/set/map) is acting as a producer (of data) i.e while using retrieve operation, use upper bound
+eg : ? extends Number => Number or it's subtype (Byte,Short.....Double)
+get : type of the data that you get  Number or it's subtype, BUT you can't add Integer , if it's collection of Double
+Can be accessed using Number type of the ref.
+(Producer extends)
+
+super : lower bound
+? super T => T or it's super type
+Use it whenever your collection is acting as a consumer (data sink) : i.e wheneve you want to add data , to a collection.
+(Consumer super)
+
+
+
+2. Solve (Lab work)
+Collections class API
+public static <T> void copy​(List<? super T> dest, List<? extends T> src)
+
+If you consider Emp<---Mgr <---- SalesMgr
+
+Which of the following is valid ?
+1. You should be able to copy SalesMgr type of refs into Emp type of the list
+2. You should be able to copy SalesMgr type of refs into Mgr type of the list
+3. You should be able to copy Emp  type of refs into Mgr type of the list 
+4. You should be able to copy Mgr type of refs into SalesMgr type of the list 
+
+It means
+If src type of the list for copying is  SalesMgr (i.e you have a list of SalesMgrs)
+dest  type of the list for copy should be  ????
+
+If src type of the list for copying is  Mgr
+dest  type of the list for copy should be  ????
+
+If src type of the list for copying is  Emp
+dest  type of the list for copy should be  ????
+
+If the dest type of the list Mgr 
+src type of the list should be ???
+
+
+
+What is the difference between a wildcard bound and a type parameter bound?
+
+A wildcard can have only one bound, while a type parameter can have several bounds. 
+
+A wildcard can have a lower or an upper bound, while there is no such thing as a lower bound for a type parameter. 
+
+Wildcard bounds and type parameter bounds are often confused, because they are both called bounds and have in part similar syntax. 
+
+Example (of type parameter bound and wildcard bound): 
+
+class Box< T extends Appendable & Flushable > {
+  private T theObject;
+  public Box(T arg)                { theObject = arg; } 
+  public Box(Box< ? extends T > box) { theObject = box.theObject; }
+  ...
+}
+

@@ -1,0 +1,100 @@
+Map Overview (refer to the diagram "regarding Maps")
+
+Map Implementation class 
+1. HashMap<K,V>
+1.1 Constructors
+1. HashMap() : size=0, init capa=16, Load Factor =0.75f
+2. HashMap(int initCapa) : size=0, init capa=capa, Load Factor =0.75f
+3. HashMap(int initCapa,float loadFactor) : size=0, init capa=capa, Load Factor =loadFactor
+4. public HashMap(Map<? extends K,? extends V> m)
+Meaning : Creates populated HashMap of type K,V from any Map (AL/LL/Vector : javac err
+HS/LHS/TS : javac err
+HM/LHM/TM : no error ) having generic type of K or its sub type & V or its sub type
+
+Steps n API
+
+0. Create new empy map to store account details
+HashMap<Integer,BankAccount>  hm=new HM<>();//size=0,capa=16,L.F=0.75
+
+0.5 Create new account
+Map i/f API
+1. public V put(K key,V value)
+Meaning : It will insert the new entry into map.If key already exists : it will replace old value by new value.
+Rets : null in case of new entry or old value ref. in case of existing entry.
+eg : sop(map.put(k1,v1));//null
+sop(map.put(k2,v2));//null
+sop(map.put(k3,v3));//null
+sop(map.put(k1,v4));//v1
+//which entries  : { k1:v4,k2:v2 ,k3:v3}
+
+2. public  V putIfAbsent(K key,V value)
+Meaning : Inserts new entry n rets null
+In case of existing entry , retains old value , rets old value ref.
+
+eg : sop(map.putIfAbsent(k1,v1));//null
+sop(map.putIfAbsent(k2,v2));//null
+sop(map.putIfAbsent(k3,v3));//null
+sop(map.putIfAbsent(k1,v4));//v1
+//which values(entries)  :  k1:v1 k2:v2 k3:v3
+
+3. public void putAll(Map<? extends K,? extends V> m)
+eg : map1.putAll(map2);
+Meaning : It will copy all entries from map2 ----> map1
+(put : replace)
+
+4. public V get(Object key)
+Rets value type of ref if key is found else rets null.
+eg : map.get(k2) : v2
+map.get(k10) : null
+
+5. boolean containsKey(Object key)
+Returns true if this map contains a mapping for the specified key , otherwise false;
+eg : map.containsKey(k1) ---true
+
+6. boolean containsValue(Object value)
+Returns true if this map maps one or more keys to the specified value. 
+eg : map :  k1:v1 k2:v2 k3:v3
+map.containsValue(v3) ---- true
+
+In HashMap : 
+containsKey : O(1)
+containsValue : O(n)
+
+7. public V remove(Object K)
+Tries to remove the entry(=mapping=key n value pair) if key is found --rets existing value ref.
+Rets null if key is not found.;
+eg : map :  {k1:v1 k2:v2 k3:v3}
+sop(map.remove(k2));//v2
+sop(map);//k1:v1  k3:v3
+sop(map.remove(k20));//null
+sop(map);//k1:v1  k3:v3
+
+
+How to overcome limitations of Map (can't iterate over map , can't search/sort/remove by any value based criteria)
+
+Solution : Convert the map into its Collection view
+
+1. How to extract key type refs from a Map ?
+public Set<K> keySet()
+eg : HM<Integer,BankAccount> hm=new HM<>();
+add some a/cs 
+  Set<Integer> keys =hm.keySet();//O(n)
+
+2. How to get value type of references from a Map ?
+public Collection<V> values();
+eg : HM<Integer,BankAccount> hm=new HM<>();
+added some a/cs ....
+Collection<BankAccount> accts =hm.values();//O(n)
+
+3. How to get key-value pair(entry) of references from a Map ?
+Map : i/f 
+public Set<Map.Entry<K,V>> entrySet();
+Nested i/f : Map.Entry<K,V> : to represent an Entry in a Map
+
+
+4. Methods of Map.Entry i/f
+public K getKey()
+public V getValue();
+
+
+

@@ -1,0 +1,154 @@
+Regarding Type Erasure in Generics
+
+Why generics was introduced in Java ?
+To add type safety @ compile time , so that explicit downcasting won;t be required n code won't result into ClassCastException.
+Javac can catch type mismatch errors
+It also provides flexibility
+eg : You don't have create 3 different ArrayList classes to store : Employees, Customers n BankAccount
+
+ArrayList<E> is a generic class , where E is the type parameter.
+E can be replaced by : Employee | Customer | BankAccount
+
+This generic information is typically required by javac .
+It's not needed (in most of the cases !) for Java Runtime.
+
+So java compiler performs : type erasure , during compilation.
+
+
+What is it ?
+It is a process in which compiler replaces a generic parameter with actual class .
+In type erasure, compiler ensures that no extra classes are created and there is no runtime overhead.
+(avoids code bloats)
+It adds the backward compatibility with legacy code(non generic , raw types)
+
+Simple Rule
+During the type erasure process, the Java compiler erases all type parameters and replaces each with its first bound if the type parameter is bounded, or Object if the type parameter is unbounded.
+
+eg : Consider below Node class for a Doubly Linked List
+public class Node<T> {
+    private T data;
+    private Node<T> previous;
+    private Node<T> next;
+
+    public Node(T data,Node<T> previous , Node<T> next) {
+        this.data = data;
+	this.previous=previous;
+        this.next = next;
+    }
+
+    public T getData() { return data; }
+    // some more code....
+}
+
+Because the type parameter T is unbounded, the Java compiler replaces it with Object:
+
+public class Node {
+
+    private Object data;
+    private Node previous;
+    private Node next;
+
+    public Node(Object data,Node previous Node next) {
+        this.data = data;
+        this.previous=previous;
+        this.next = next;
+    }
+
+    public Object getData() { return data; }
+    // ...
+}
+
+Another eg : 
+public class Pair<T,U>
+{
+   private T first;
+   private T second;
+  public Pair(T first, U second)
+{
+this.first = first;
+this.second = second;
+}
+public T getFirst() { return first; }
+public U getSecond() { return second; }
+public void setFirst(T newValue) { first = newValue; }
+public void setSecond(U newValue) { second = newValue;
+}
+}
+
+Will be compiled into  : 
+public class Pair
+{
+private Object first;
+private Object second;
+public Pair(Object first, Object second)
+{
+this.first = first;
+this.second = second;
+}
+public Object getFirst() { return first; }
+public Object getSecond() { return second; }
+public void setFirst(Object newValue) { first = newValue; }
+public void setSecond(Object newValue) { second = newValue;
+}
+}
+
+
+
+In case of bounded Types : 
+public class Node<T extends Comparable> {
+    private T data;
+    private Node<T> previous;
+    private Node<T> next;
+
+    public Node(T data,Node<T> previous , Node<T> next) {
+        this.data = data;
+	this.previous=previous;
+        this.next = next;
+    }
+
+    public T getData() { return data; }
+    // some more code....
+}
+
+Because the type parameter T is bounded, the Java compiler replaces it with the upper bound , i.e Comparable
+
+public class Node {
+
+    private Comparable data;
+    private Node previous;
+    private Node next;
+
+    public Node(Comparable data,Node previous Node next) {
+        this.data = data;
+        this.previous=previous;
+        this.next = next;
+    }
+
+    public Comparable getData() { return data; }
+    // ...
+}
+
+If there are multiple bounds , then Compiler will replace it by the 1st bound
+
+eg : public class Node<T extends Comparable & Serializable> {
+    private T data;
+    private Node<T> previous;
+    private Node<T> next;
+
+    public Node(T data,Node<T> previous , Node<T> next) {
+        this.data = data;
+	this.previous=previous;
+        this.next = next;
+    }
+
+    public T getData() { return data; }
+    // some more code....
+}
+
+After type erasure : T will be replaced by : Comparable
+If you swap the sequence of bounds , T will be replaced by : Serializable
+
+
+
+
+
