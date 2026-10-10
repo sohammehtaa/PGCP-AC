@@ -1,0 +1,211 @@
+What is the need of ObjectInputStream & ObjectOutputStream ?
+
+To achieve Persistence.
+
+Persistence=Saving  the state of the java object in permanent manner.
+
+In the absence of Object streams, if you want to persist(save in permanent manner) state of objects or application data in binary manner --- prog has to convert all data to binary & then only it can be written to streams.
+
+Object streams supply ready made functionality for the same.
+
+Stream Class for writing Objects to bin. stream
+java.io.ObjectOutputStream implements DataOutput,ObjectOutput
+
+Description --- ObjectOutputStream class performs serialization.
+serialization= extracting state of object & converting it in binary form.
+(Details --Serialization literally refers to arranging something in a sequence. It is a process in Java where the state of an object is transformed into a stream of bits. The transformation maintains a sequence in accordance to the metadata supplied)
+
+state of object = non-static & non-transient data members
+Constructor 
+ObjectOutputStream(OutputStream out) 
+out--- dest Binary o/p stream  --- where serialized data stream has to be sent.
+API methods ---
+public void writeInt(int i) throws IOExc
+public void writeChar(char i) throws IOExc
+public void writeFloat,writeDouble.....
+For Strings 
+public void writeUTF(String s) throws IOExc ---uses Modified UTF 8 convention
++
+public void writeObject(Object o) throws IOException,NotSerializableException
+
+De-serialization---- conversion or re-construction of Java objs from bin stream.
+java.io.ObjectInputStream  --- performs de-serialization.--- implements DataInput,ObjectInput
+Constructor --- ObjectInputStream(InputStream in) 
+API methods ---
+readInt,readShort,readUTF,readChars..... +
+public Object readObject() throws IOException,ClassNotFoundException,InvalidClassException
+
+
+
+Serialization/De-serialization
+
+Ability to write or read  a Java object to/from  a binary stream
+
+Supported since JDK 1.1
+
+Saving an object to persistent storage(current example -- bin file later can be replaced by DB or sockets) is called persistence
+
+Java provides a java.io.Serializable interface for checking serializability of java classes.(object)
+
+
+Meaning --- At the time of serialization(writeObject) or de-serialization(readObject) --- JVM checks if the concerned object is Serializable(i.e has it implemented Serializable i/f) --if yes then only proceeds , otherwise throws Exception ---java.io.NotSerializableException
+
+Serializable i/f has no methods / data members and is a marker(tag) interface. Its role is to provide a run time marker for serialization.
+
+Details 
+What actually gets serialized?
+When an object is serialized, mainly state of the object(=non-static & non-transient data members)  are preserved.
+----------------------------------------------------
+
+If a data member is an object(ref) , data members of the object are also serialized if that objects class is serializable
+
+eg : If Product class HAS - A reference of ShippingAddress
+
+The tree of objects data, including these sub-objects constitutes an object graph
+
+eg : HM<String,Product> hm .....
+out.writeObject(hm);
+HM  -- String --Product (id,name,price,qty,category +shippingDetails)
+
+If a serializable object contains reference to non-serializable element, the entire serialization fails
+
+
+
+
+If the object graph contains a non-serializable object reference, the object can still be serialized if the non-serializable reference is marked transient
+
+Details --- transient is a keyword in java.
+Can be applied to data member.(primitive as well as ref types)
+transient implies ---skip from serialization.(meant for JVM)
+During de-serialization ---transient(or even static) members are initialized to def values.
+Usage -- To persist --partial state of the serializable object
+---------------------------------------
+
+If super-class is serializable, then sub-class is automatically serializable.
+
+If super-class is NOT serializable --- super class must have a default constructor (otherwise InvalidClassException is thrown by JVM during de serilaization)
+sub-class developer has to explicitely write the state of super-class.
+
+What happens during deserialization?(in.readObject())
+
+When an object is deserialized, the JVM tries to bring the object back to life by making a new object on the heap that has the same state the serialized object had at the time it was serialized. 
+
+1. (Class.forName("com.app.core.Account")--class loading purpose,
+1.5 Matches incoming Serial version UID with the computed one
+If matches --continues to steps 2.
+Otherwise --- InvalidClassException is thrown.
+2.  If JVM comes across any non serializable super class , having no def constr --- InvalidClassExc is thrown.
+Otherwise continues
+Class.newInstance() or similar reflection API  -- EMPTY/BLANK object is created on heap.
+3. setting state of the object from bin stream)
+The static/transient variables, which come back have either null (for object references) or as default primitive values. 
+
+4. Constructor of serializable class does not get called during de-serialization.
+why ?
+
+Think -- what is the need of constructor? 
+Constructor initializes the object variables with either default values or values which is assigned inside constructor. BUT we want to initialize the state of the object from binary stream.
+
+---------------
+
+What are pre-requisites for de-serialization?
+Byte codes (.class file) for entire object graph to be de-serialized + Bin data stream containing state.
+
+--------------------
+Details 
+
+Java Deserializing process says, "For serializable objects, the no-arg constructor for the first non-serializable supertype is run."
+
+It means during deserialization process, JVM checks the inheritance class hierarchy of instance in process. 
+
+It checks, if the Class instance in process has implemented Serializable interface, If yes, then JVM will check Parent class(If any) of the instance to see if Parent has implemented Serializable interface, If yes, then JVM continues to check all its Parents upwards till it encounters a class which doesn't implement Serializable interface. If all inheritance hierarchy of instance has implemented Serializable interface as one shown above then JVM will end up at default extended Object class which doesn't implemented Serializable interface. So it will invoke a default constructor of Object class.
+
+If in between searching the super classes, any class is found non-serializable then its default constructor will be used . If any super class of instance to be de-serialized is non-serializable and also does not have a default constructor then the java.io.InvalidClassException is thrown by JVM.
+
+So till now we got the instance located in memory using one of superclasss default constructor. Note that after this no constructor will be called for any class. After executing super class constructor, JVM read the byte stream and use instances meta data to set type information and other meta information of instance.
+
+After the blank instance is created, JVM first set its static fields and then invokes the default readObject() method (if its not overridden, otherwise overridden method will be called) internally which is responsible for setting the values from byte stream to blank instance. After the readObject() method is completed, the deserialization process is done and you are ready to work with new deserialized instance.
+
+--------------------------
+
+What is serialversion UID?
+
+The serialVersionUID is a universal version identifier for a Serializable class. Deserialization uses this number to ensure that a loaded class corresponds exactly to a serialized object. If no match is found, then an InvalidClassException is thrown.
+
+How to generate ?
+serialver F.Q class name(for a class that imple. Serializable)
+eg : serialver java.util.HashMap
+
+Details
+Each time an object is serialized,  the object (including every object in its graph) is 'stamped' with a version ID number for the object's class. The ID is called the serialVersionUlD, and it's computed based on information about the class structure(class constructors,implemented interfaces,data members).
+
+As an object is being deserialized, if the class has changed since the object was serialized, the class could have a different serialVersionUID, and deserialization will fail.(java.lang.InvalidClassException). 
+
+Since different java compilers or even different versions of java compilers can produce different serial version UID , its always recommended , that a programmer should add UID even in the 1st version of class & modify it whenever the class is modified substantially.
+
+examples of incompatible changes
+-- Deleting fields , Moving classes up or down the hierarchy ,changing a non-static field to static or a non-transient field to transient ,changing the declared type of a primitive field  ....
+
+examples of compatible changes
+adding fields,adding classes,adding Serializable,modifying access specifer of the field....
+-----------------------------------
+Serialization format overview
+Contents of serialized binary stream
+It has all the information about the instance which was serialized by serialization process. 
+This information includes
+ class’s meta data
+ type information of instance fields 
+ values of instance fields as well. 
+
+This same information is needed when object is re-constructed back to a new object instance. While deserializing an object, the JVM reads its class metadata from the stream of bytes which specifies whether the class of an object implements either ‘Serializable’ or ‘Externalizable’ interface.
+Detailed format
+1. Magic no.
+2. Serialization format version no.
+3. Class desc -- class name,serial version uid,desc of data members( 
+4. State of the object.(non static & non transient data members)
+-----------
+Limitations
+1. Java technology only
+2. Difficult to maintain in case of changing class format
+3. May lead to security leaks.
+
+-----------------------
+Important facts of serialization n deserialization
+1.
+Transient and static fields are ignored in serialization. After de-serialization transient fields and non-final static fields will be inited to default values. Final static fields still have values since they are part of the class data.
+2. 
+ObjectOutputStream.writeObject(obj) and ObjectInputStream.readObject() are used in serialization and de-serialization.
+3.
+During serialization, you need to handle IOException; during de-serialization, you need to handle IOException and ClassNotFoundException. So the de-serializaed class type must be in the classpath.
+4. 
+Uninitialized non-serializable, non-transient instance fields are tolerated. When adding "private Address adr;  no error during serialization. 
+
+But , private Address adr = new Address(); will cause exception:
+Exception in thread "main" java.io.NotSerializableException: com.app.core.Address
+
+5. Serialization and de-serialization can be used for copying and cloning objects. It is slower than regular clone, but can produce a deep copy very easily.
+
+6. If you need to serialize a Serializable class Employee, but one of its super classes is not Serializable, can Employee class still be serialized and de-serialized? 
+
+The answer is yes, provided that the non-serializable super-class has a no-arg constructor, which is invoked at de-serialization to initialize that super-class.
+
+What will be the state of data members?
+Sub class (serializable) data members will have the restored state & super class(non serializable) data members will have def inited state
+
+7. You must be careful while modifying a class implementing java.io.Serializable. If class does not contain a serialVersionUID field, its serialVersionUID will be automatically generated by the compiler(using serialver tool). Different compilers, or different versions of the same compiler, will generate potentially different values.
+
+Computation of serialVersionUID is based on not only fields, but also on other aspect of the class like implements clause, constructors, etc. So the best practice is to explicitly declare a serialVersionUID field to maintain backward compatibility. If you need to modify the serializable class substantially and expect it to be incompatible with previous versions, then you need to increment serialVersionUID to avoid mixing different versions.
+
+8. Important differences between Serializable and Externalizable
+
+8.1 
+If you implement Serializable interface , automatically state of the object gets seriliazed. BUT if u implement  Externalizable  i/f -- you have to explicitly mention which fields  you want to serialize.
+
+8.2 
+Serializable is marker interface without any methods. Externalizable interface contains two methods: writeExternal() and readExternal().
+
+8.3 
+Default Serialization process will take place for classes implementing Serializable interface. Programmer defined Serialization process for classes implementing Externalizable interface.
+
+8.4 
+Serializable i/f uses java reflection to re construct object during de-serialization and does not require no-arg constructor. But Externalizable requires public no-arg constructor.
