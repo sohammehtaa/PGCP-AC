@@ -1,0 +1,235 @@
+Core Java Lab Exam practice questions
+
+1. 
+A company StyleWithPen sells stylish Pens online. 
+Company needs an interface for site admin to manage stocks.
+
+Write a console-based menu driven java program for site ADMIN to perform following operations: 
+
+1. Add new Pen
+2. Update stock of aPen
+3.Set discount of 20% for all the pens which are not at all sold in last 3 months
+4. Remove Pens which arenever sold once listed in 9 months
+
+You can define a class Pen with the following fields – 
+a.	ID (unique identifier for each Pen, should be generated automatically)
+b.	Brand (Example:  Cello, Parker, Reynolds etc.)
+c.	Color
+d.	InkColor
+e.	Material (Example: Plastic, Alloy Steel, Metal etc.)
+f.	Stock (Available quantity)
+g.	Stock Update Date (it changed every time when admin update stock or user order executed)
+h.	Stock Listing Date (date on which product is added to site for sale)
+i.	Price (in INR) 
+j.	Discounts (in percentage)
+
+Note: You can use java collection to store items in memory. 
+
+
+
+2. Create a menu driven application "TaskManager" to manage your day-to-day tasks. 
+
+You can create a class Task with fields like taskId, taskName, description, taskDate, status, active. 
+taskId should be unique and generated automatically.
+status should be either PENDING, IN PROGRESS or COMPLETED.
+active should be either true or false. Deleted task will have active=false 
+Newly added task should have default status as PENDING and active=true
+
+You can use suitable data structure to store data in memory.
+
+Following functionalities are expected -
+
+a. Add New Task                       
+b. Delete a task                         
+c. Update task status               
+d. Display all pending tasks     
+e. Display all pending tasks for today           
+f.  Display all tasks sorted by taskDate        
+
+
+3. Write a java program to read a text file which contains bank account statement of a month. 
+First row of file contains field names, remaining rows contains transaction data.
+Values of each row are separated by comma
+
+Display following details on the console: 
+Sum of all deposits
+Max deposit amount
+Shopping expenses (sum of withdrawals for shopping)
+Date on which maximum amount withdrawn
+
+For example: 
+Name of the file: Jan2024.txt
+Content of the file: 
+TransactionDate,Narration,WithdrawalAmount,DepositAmount
+01-01-2023,Salary Credit,0.0,50000.0
+01-01-2023,Mobile Recharge,300.0,0.0
+02-01-2023,DTH Recharge,1000.0,0.0
+02-01-2023,Rent Transfer,11000.0,0
+02-01-2023,Cashback Paytm,0.0,1000.0
+05-01-2023,Shopping,5000.0,0.0
+10-01-2023,Shopping,7000.0,0.0
+15-01-2023,Cashback,0.0,3000.0
+25-01-2023,Mobile Purchase,10000.0,0.0
+31-01-2023,Dining,1200.0,0.0
+
+Expected output on console:
+Sum of all deposits = 54000.0
+Max deposit amount= 50000.0
+Shopping expenses = 12000.0
+Date on which max amount withdrawn= 02-01-2023
+
+
+    
+
+
+4. Write a class Cricketer with following Fields 
+
+String name,int age,String email_id,String Phone,int rating
+
+This application should contains the test class called CricketerTest which will test the functionality of Cricketer class.
+
+Use any collection you like to store the data.
+
+1.Accept minimum 5 Cricketers in the collection.
+
+2.Modify Cricketer's rating
+
+3.Search Cricketer by name
+
+4. Display all Cricketers added in collection.
+
+5.Display All Cricketers in sorted form by rating.
+
+
+
+5. Write a menu driven program for above menu 
+
+
+This application will be used by store owner(admin) or customers. Consider two users are already there in the system for simplicity. 
+Admin User (loginId=admin, password = admin)
+Customer (loginId=c1, password=c1)
+
+Login is required to perform any operation. Without login, access to any functionality will throw exception. 
+
+Store owner can perform any operation after login.
+
+A customer can browse, order and check status of his order after login. 
+
+Customer can’t access Admin only functionalities like Add Pet, Update Pet, Update order status etc. Accessing Admin only functionality by customer will throw Unauthorized exception
+
+Pet Store Application Menu: 
+Login
+Add new Pet (Admin only functionality)
+Update Pet details (Admin only functionality)
+Display all available pets
+Order a Pet
+Check order status by Order Id
+Update order status (Admin only functionality)
+Exit
+
+Core classes
+Pet ( petId, name, category, unitPrice, stocks)
+Category is an enum with values like (CAT, DOG, RABBIT, FISH)
+Example:
+  petId = 101, name=” Bull Dog”, category= DOG, unitPrice= 1000, stocks=50
+
+Order (orderId, petId, quantity, status)
+Status is an enum with values like (PLACED, IN_PROCESS, COMPLETED)
+Example: 
+   orderId=1, petId=101, quantity=5, status=PLACED
+
+Hints :
+Create classes, Enums – Pet, Order, Category, Status 
+Create required exception classes – AuthenticationException, AuthorizationException, OutOfStockException 
+Handle exceptions
+Menu creation, using suitable collection classes for storing Pet and Order
+Login 
+Auto Order Id generation 
+Adjusting stocks after an order, order quantity should not be less than available stock 
+
+
+6. Write a console-based Java application for a company to manage employee details.
+
+There are two types of employees – Full Time Employee (FTE), Part Time Employee (PTE)
+
+Application captures following details for each employee whether FTE or PTE:
+       Name, Date of joining, Phone Number, Aadhaar number  
+For FTE, monthly salary is also captured.
+For PTE, hourly payment amount is also captured.
+
+Same collection class is used to store both FTE and PTE
+
+Input should be validated before entering into the system:
+Emp Id should be auto generated and unique for each employee.
+Date of joining should be of type LocalDate 
+Phone number should be all numeric and of length 10
+ Hint : Can use a reg ex : ^[0-9]*$ n use String class's matches method
+Aadhaar number should be all numeric and of length 12 only, there should not be any space in between.
+ Hint : Can use a reg ex : ^\\S+$ n use String class's matches method
+Two employees cannot have same aadhaar number
+
+Application Menu:
+Add full time employee
+Add part time employee
+Delete an employee by Emp Id
+Search employee details by Aadhaar number
+Display all employee details
+Display all employee details sorted by date of joining
+Exit
+
+7. Create java application for the following.
+ Create Item class with following
+	Item Code ( String) : primary key
+	Description : String
+	Price : double
+	Shipment Date : Date
+
+
+Create Tester Java Application to accept Item details from user (minimum -- 5 items) using Scanner.
+Store them in a suitable data structure.
+
+ Sort these details as per Item code. Store them in binary file using serialization technique, before terminating from application.(file name : items_code.ser)
+
+Sort these details as per Item price. Store them in binary file using serialization technique, before terminating from application
+
+Note : Use Scanner to accept details from user.
+
+
+8. 
+Create  java  application called StockTradingService(using suitable data structure :  DS) , in a Tester. This application must provide following functionalities.
+
+Stock must have these details
+stock id (unique : string), stock name (string), company name(string) , price (double), closing date (Date) , quantity (int)
+
+1. Add at least 5 sample stocks in the beginning of application in the suitable DS ,
+
+2. Add New stock in the market
+Accept all the stock details & insert it in the DS
+Ensure no duplicate stock ids. Add a validation rule that stock closing date must be a future date.
+In case of invalid inputs , throw custom exception & handle it in a centralized manner in StockTradingService (tester)
+
+3. View Available stocks by Company: 
+input : company name
+O/P All the stocks published by that company.
+
+4. Purchase stocks
+input : stock id , quantity
+In case of invalid stock id or insufficient available quantity , throw custom exception , with suitable error message.
+In case of success , update stock quantity suitably.
+
+5. Sell Stocks
+input : stock id , quantity
+In case of invalid stock id  throw custom exception , with suitable error message.
+In case of success , update stock quantity suitably.
+
+
+6. Save n Exit : Before terminating application  
+save all stock details in a binary file(file name : stocks.ser) , using serialization.
+
+Non-Functional Requirements:
+1. The application must use appropriate collection(list or set / map) to save all the required information.
+2. Application must throw appropriate exceptions whenever necessary.
+3. Application must be created using appropriate layers.(eg : CollectionUtils ,IOUtils , Custom exception , core classes , validation rules, tester)
+4. Wherever possible try to use functional programming (declarative) over imperative approach.
+
+
